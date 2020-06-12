@@ -2,5 +2,5 @@ package david.hosseini.videosearch.di
 
 import dagger.Component
 
-@Component
+@Component(modules = [ApiModule::class])
 interface AppComponent
