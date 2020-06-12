@@ -1,6 +1,8 @@
 package david.hosseini.videosearch.di
 
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(modules = [ApiModule::class])
+@Singleton
+@Component(modules = [ApiModule::class, DispatcherModule::class])
 interface AppComponent
