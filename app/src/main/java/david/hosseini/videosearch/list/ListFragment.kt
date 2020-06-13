@@ -5,10 +5,12 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import david.hosseini.videosearch.App.Companion.appComponent
 import david.hosseini.videosearch.R
 import david.hosseini.videosearch.api.model.Video
+import david.hosseini.videosearch.detail.DetailFragment
 import david.hosseini.videosearch.util.observe
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
@@ -47,6 +49,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private fun onItemClicked(position: Int) {
         val video = adapter!!.items[position]
+        openDetailFragment(video)
     }
 
     private fun observeViewModel() {
@@ -79,4 +82,12 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     private fun setupRecyclerView() {
         recyclerVideos.adapter = adapter
     }
+
+    private fun openDetailFragment(video: Video) {
+        parentFragmentManager.commit {
+            val detailFragment = DetailFragment.newInstance(video)
+            replace(R.id.frameContainer, detailFragment)
+        }
+    }
+
 }
