@@ -11,6 +11,7 @@ import david.hosseini.videosearch.App.Companion.appComponent
 import david.hosseini.videosearch.R
 import david.hosseini.videosearch.api.model.Video
 import david.hosseini.videosearch.detail.DetailFragment
+import david.hosseini.videosearch.util.hideKeyboard
 import david.hosseini.videosearch.util.observe
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
@@ -84,6 +85,8 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     }
 
     private fun openDetailFragment(video: Video) {
+        view?.hideKeyboard()
+
         parentFragmentManager.commit {
             val detailFragment = DetailFragment.newInstance(video)
             replace(R.id.frameContainer, detailFragment)
