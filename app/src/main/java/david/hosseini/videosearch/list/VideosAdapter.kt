@@ -9,9 +9,10 @@ import david.hosseini.videosearch.R
 import david.hosseini.videosearch.api.model.Video
 import kotlinx.android.synthetic.main.item_video.view.*
 
-class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
+class VideosAdapter(private val clickListener: (Int) -> Unit) :
+    RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 
-    private val items = mutableListOf<Video>()
+    val items = mutableListOf<Video>()
 
     fun addItems(collection: Collection<Video>) {
         items.addAll(collection)
@@ -21,7 +22,7 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(R.layout.item_video, parent, false)
-        return ViewHolder(itemView)
+        return ViewHolder(itemView, clickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -31,7 +32,12 @@ class VideosAdapter : RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = items.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View, clickListener: (Int) -> Unit) :
+        RecyclerView.ViewHolder(itemView) {
+
+        init {
+            itemView.setOnClickListener { clickListener(adapterPosition) }
+        }
 
         fun bind(video: Video) {
             itemView.textItemVideo.text = video.name

@@ -19,7 +19,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val viewModel: ListViewModel by viewModels(factoryProducer = { viewModelFactory })
 
-    private var adapter: VideosAdapter? = VideosAdapter()
+    private var adapter: VideosAdapter? = VideosAdapter(::onItemClicked)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +43,10 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     override fun onDestroy() {
         super.onDestroy()
         adapter = null //adapter can cause memory leak so set it to null
+    }
+
+    private fun onItemClicked(position: Int) {
+        val video = adapter!!.items[position]
     }
 
     private fun observeViewModel() {
