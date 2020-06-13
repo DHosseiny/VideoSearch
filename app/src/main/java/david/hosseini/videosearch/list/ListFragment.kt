@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import david.hosseini.videosearch.App.Companion.appComponent
 import david.hosseini.videosearch.R
+import david.hosseini.videosearch.api.model.Video
+import david.hosseini.videosearch.util.observe
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
@@ -17,20 +19,41 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     private val viewModel: ListViewModel by viewModels(factoryProducer = { viewModelFactory })
 
+    private var adapter: VideosAdapter? = VideosAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         appComponent.injectListFragment(this)
+
+        observeViewModel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         configToolbar()
+
+        setupRecyclerView()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         toolbar.setNavigationOnClickListener(null)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adapter = null //adapter can cause memory leak so set it to null
+    }
+
+    private fun observeViewModel() {
+
+        fun onVideosReady(videos: List<Video>) {
+            adapter!!.addItems(videos)
+        }
+
+        viewModel.videos.observe(this, ::onVideosReady)
+    }
+
 
     private fun configToolbar() {
 
@@ -47,5 +70,9 @@ class ListFragment : Fragment(R.layout.fragment_list) {
             inflateMenu(R.menu.menu_search)
             configureSearchMenu()
         }
+    }
+
+    private fun setupRecyclerView() {
+        recyclerVideos.adapter = adapter
     }
 }
