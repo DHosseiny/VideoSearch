@@ -8,14 +8,7 @@ class App : Application() {
 
     companion object {
 
-        lateinit var appComponent: AppComponent
-            private set
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-
-        appComponent = DaggerAppComponent.create()
+        val appComponent: AppComponent by lazy { DaggerAppComponent.create() }
     }
 
 }
