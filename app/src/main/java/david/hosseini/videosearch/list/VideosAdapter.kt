@@ -15,6 +15,7 @@ class VideosAdapter(private val clickListener: (Int) -> Unit) :
     val items = mutableListOf<Video>()
 
     fun addItems(collection: Collection<Video>) {
+        items.clear()
         items.addAll(collection)
         notifyDataSetChanged()
     }
