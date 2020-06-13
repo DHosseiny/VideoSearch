@@ -90,6 +90,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         parentFragmentManager.commit {
             val detailFragment = DetailFragment.newInstance(video)
             replace(R.id.frameContainer, detailFragment)
+            addToBackStack(null)
         }
     }
 
