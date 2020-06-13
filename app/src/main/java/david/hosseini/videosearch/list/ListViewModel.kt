@@ -1,5 +1,6 @@
 package david.hosseini.videosearch.list
 
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.*
 import david.hosseini.videosearch.api.model.Video
 import kotlinx.coroutines.launch
@@ -8,11 +9,23 @@ import javax.inject.Singleton
 
 class ListViewModel(private val repository: VideosRepository) : ViewModel() {
 
+    val onQueryTextListener: SearchView.OnQueryTextListener =
+        object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchKeyword(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+
+        }
 
     private val _videos = MutableLiveData<List<Video>>()
     val videos: LiveData<List<Video>> = _videos
 
-    fun searchKeyword(keyword: String) {
+    private fun searchKeyword(keyword: String) {
 
         if (keyword.length < 3) return //don't do search when user is typed few characters
 
