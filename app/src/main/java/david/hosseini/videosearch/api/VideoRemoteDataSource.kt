@@ -14,9 +14,10 @@ class VideoRemoteDataSource @Inject constructor(private val vimeoApi: VimeoApi) 
     private fun SearchResponse.toVideos(): List<Video> = data.map {
         //Here considered uri is always in this format : /videos/{id}
         val id = it.uri.substringAfterLast('/').toInt()
+        val username = it.user.name
         //For brevity considered there is always a picture
         val pictureLink = it.pictures.pictures[0].link
-        Video(id, it.name, pictureLink)
+        Video(id, it.name, it.description, username, pictureLink)
     }
 }
 
